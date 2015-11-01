@@ -282,7 +282,9 @@ function getNoun(y) {
   } 
 }
 
+//CHANGED: rename misnamed adjective noise to noisy
 var adjectives = ["dark", "color", "whimsical", "shiny", "noisy", "apocalyptic", "insulting", "praise", "scientific"];  // types of adjectives for pizza titles
+
 var nouns = ["animals", "everyday", "fantasy", "gross", "horror", "jewelry", "places", "scifi"];                      // types of nouns for pizza titles
 
 // Generates random numbers for getAdj and getNoun functions and returns a new pizza name
@@ -450,13 +452,18 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    //CHANGED: pulled out of for loop as it is giving the same number fo i between 0 and numRandomPizzaContainer
+    
+    //CHANGED: Moved dx and newwidth variables out of for loop -  giving constant number
     var dx = determineDx(document.querySelector(".randomPizzaContainer"), size);
     var newwidth = (document.querySelector(".randomPizzaContainer").offsetWidth + dx) + 'px';
     
-    //CHANGED: cached variables to speed up loop
+    //CHANGED: Created a new variable to select all divs with randomPizzaContainer divs
     var randomPizzaContainer = document.querySelectorAll(".randomPizzaContainer");
+    
+    //CHANGED: Created a new variable for the number of randomPizzaContainer  
     var numRandomPizzaContainer = document.querySelectorAll(".randomPizzaContainer").length;
+    
+    //CHANGED: Decrement count in for loop
     for (var i = numRandomPizzaContainer; i--;) {
       randomPizzaContainer[i].style.width = newwidth;
     }
@@ -506,20 +513,30 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
-
+  
+  //CHANGE: use getElementsByClassName instead of querySelector
   var items = document.getElementsByClassName('mover');
   
-  //ADDED: caching the current y-axis value of the top position of the page
+  //CHANGE: cache the current y-axis value of the top position of the page
   var top = (document.body.scrollTop / 1250);
+  
+  //CHANGE: create new variable to calculate half of window width
   var halfWindowWidth = window.innerWidth * 0.5;
+  
+  //CHANGE: cache constant number - number of pizzas on screen
   var numPizzas = items.length;
-
+  
+  //CHANGE: decrement count
   for (var i = numPizzas; i--;) {
-    //CHANGED: replace with variable
+    
+    //CHANGE: replace with cacvariable
     var phase = Math.sin( top + (i % 5));
-    //items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    
+    //CHANGE: create a variable to calculate how much to move left
     var left = ((items[i].basicLeft + 100 * phase) - halfWindowWidth) + 'px';
-        items[i].style.transform = "translate3d("+left+",0,0)";
+    
+    //CHANGE: Applied translate3d() transform functions instead of using 'left' style properties
+    items[i].style.transform = "translate3d("+left+",0,0)";
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -540,7 +557,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
   
-  //CHANGED: number of pizzas to display on screen to 21
+  //CHANGED: Reduced the amount of background pizzas to display on screen from 200 down to 35 to fill the sufficiently screen and change the count to decrement
   for (var i = 35; i--;) {
     var elem = document.createElement('img');
     elem.className = 'mover';
